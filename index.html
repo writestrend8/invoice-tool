@@ -822,27 +822,29 @@
 
 <script>
   (function () {
+    let lastHeight = 0;
+
     function postHeight() {
-      const height = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-      window.parent.postMessage({ iframeHeight: height }, "*");
+      const height = document.documentElement.scrollHeight || document.body.scrollHeight;
+      if (height !== lastHeight) {
+        window.parent.postMessage({ iframeHeight: height }, "*");
+        lastHeight = height;
+      }
     }
 
-    // Initial send on load
+    // Run once on load
     window.addEventListener("load", () => {
       postHeight();
     });
 
-    // Throttled ResizeObserver for DOM changes
-    let throttleTimer;
-    const resizeObserver = new ResizeObserver(() => {
-      clearTimeout(throttleTimer);
-      throttleTimer = setTimeout(postHeight, 250);
-    });
-
-    resizeObserver.observe(document.body);
+    // Only observe direct visual area (not the whole body)
+    const mainContainer = document.getElementById("invoice-generator-embed-root");
+    if (mainContainer) {
+      const observer = new ResizeObserver(() => {
+        setTimeout(postHeight, 200); // Debounce
+      });
+      observer.observe(mainContainer);
+    }
   })();
 </script>
 
