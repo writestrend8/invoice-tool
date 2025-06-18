@@ -821,29 +821,29 @@
 
 
 <script>
-  function postHeight() {
-    const height = document.documentElement.scrollHeight || document.body.scrollHeight;
-    window.parent.postMessage({ iframeHeight: height }, "*");
-  }
+  (function () {
+    function postHeight() {
+      const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      window.parent.postMessage({ iframeHeight: height }, "*");
+    }
 
-  // Initial send on load
-  window.addEventListener("load", postHeight);
-
-  // Observe mutations inside the main React mount area
-  const target = document.getElementById("invoice-generator-embed-root");
-
-  if (target) {
-    const observer = new MutationObserver(() => {
-      // Give time for DOM to fully layout
-      setTimeout(postHeight, 100);
+    // Initial send on load
+    window.addEventListener("load", () => {
+      postHeight();
     });
 
-    observer.observe(target, {
-      childList: true,
-      subtree: true,
-      attributes: true,
+    // Throttled ResizeObserver for DOM changes
+    let throttleTimer;
+    const resizeObserver = new ResizeObserver(() => {
+      clearTimeout(throttleTimer);
+      throttleTimer = setTimeout(postHeight, 250);
     });
-  }
+
+    resizeObserver.observe(document.body);
+  })();
 </script>
 
 
