@@ -822,40 +822,7 @@
 
 
 
-<script>
-  (function () {
-    let lastHeight = 0;
-    let scheduled = false;
-
-    function postHeight() {
-      const height = document.documentElement.scrollHeight;
-      if (Math.abs(height - lastHeight) > 5) { // only update if difference > 5px
-        window.parent.postMessage({ iframeHeight: height }, "*");
-        lastHeight = height;
-      }
-      scheduled = false;
-    }
-
-    function schedulePostHeight() {
-      if (!scheduled) {
-        scheduled = true;
-        setTimeout(postHeight, 300); // debounce
-      }
-    }
-
-    window.addEventListener("load", () => {
-      postHeight();
-    });
-
-    const observer = new MutationObserver(schedulePostHeight);
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      characterData: true
-    });
-  })();
-</script>
+<script src="https://unpkg.com/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
 
 
 
