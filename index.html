@@ -817,5 +817,20 @@
             }
         </script>
     </div>
+
+<script>
+  window.addEventListener("load", function () {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ iframeHeight: height }, "*");
+  });
+
+  // Optional: send updates when the user interacts
+  const observer = new ResizeObserver(() => {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ iframeHeight: height }, "*");
+  });
+  observer.observe(document.body);
+</script>
+	
 </body>
 </html>
