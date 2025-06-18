@@ -826,20 +826,24 @@
     window.parent.postMessage({ iframeHeight: height }, "*");
   }
 
+  // Initial send on load
   window.addEventListener("load", postHeight);
 
-  // Safely hook the Preview button
-  window.addEventListener("DOMContentLoaded", function () {
-    const previewButton = Array.from(document.querySelectorAll("button")).find(btn =>
-      btn.textContent.includes("Preview Invoice")
-    );
-    if (previewButton) {
-      previewButton.addEventListener("click", function () {
-        // Wait a bit for preview content to render
-        setTimeout(postHeight, 500);
-      });
-    }
-  });
+  // Observe mutations inside the main React mount area
+  const target = document.getElementById("invoice-generator-embed-root");
+
+  if (target) {
+    const observer = new MutationObserver(() => {
+      // Give time for DOM to fully layout
+      setTimeout(postHeight, 100);
+    });
+
+    observer.observe(target, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+  }
 </script>
 
 
