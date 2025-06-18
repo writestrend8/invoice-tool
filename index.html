@@ -788,18 +788,7 @@
                         <section className="bg-white rounded-lg shadow-md p-5" aria-labelledby="actions-heading">
                           <h3 id="actions-heading" className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Actions</h3>
                           <div className="space-y-3">
-
-<button
-  type="button"
-  onClick={() => {
-    setState(s => ({ ...s, activeTab: 'preview' }));
-    setTimeout(() => {
-      const height = document.documentElement.scrollHeight || document.body.scrollHeight;
-      window.parent.postMessage({ iframeHeight: height }, "*");
-    }, 500); // Delay lets preview content load first
-  }}
-  className="w-full flex items-center justify-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 py-2.5 px-4 rounded-md transition-colors"
->
+<button type="button" onClick={() => setState(s => ({ ...s, activeTab: 'preview' }))} className="w-full flex items-center justify-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 py-2.5 px-4 rounded-md transition-colors">
 
 				  
                               👁️ Preview Invoice
