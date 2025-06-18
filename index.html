@@ -826,17 +826,20 @@
     window.parent.postMessage({ iframeHeight: height }, "*");
   }
 
-  // Send height after load
   window.addEventListener("load", postHeight);
 
-  // OPTIONAL: Hook into the Preview button
-  const previewButton = document.querySelector('.preview-button-class'); // replace selector as needed
-  if (previewButton) {
-    previewButton.addEventListener("click", function () {
-      // Wait a bit for DOM to change
-      setTimeout(postHeight, 300);
-    });
-  }
+  // Safely hook the Preview button
+  window.addEventListener("DOMContentLoaded", function () {
+    const previewButton = Array.from(document.querySelectorAll("button")).find(btn =>
+      btn.textContent.includes("Preview Invoice")
+    );
+    if (previewButton) {
+      previewButton.addEventListener("click", function () {
+        // Wait a bit for preview content to render
+        setTimeout(postHeight, 500);
+      });
+    }
+  });
 </script>
 
 
