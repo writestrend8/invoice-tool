@@ -821,22 +821,10 @@
 
 
 <script>
-  function sendHeight() {
+  window.addEventListener("load", function () {
     const height = document.documentElement.scrollHeight || document.body.scrollHeight;
     window.parent.postMessage({ iframeHeight: height }, "*");
-  }
-
-  // Send once on load
-  window.addEventListener("load", sendHeight);
-
-  // Optional: debounce repeated resize changes
-  let resizeTimeout;
-  const observer = new ResizeObserver(() => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(sendHeight, 200); // prevents infinite loops
   });
-
-  observer.observe(document.body);
 </script>
 
 
