@@ -821,10 +821,22 @@
 
 
 <script>
-  window.addEventListener("load", function () {
+  function postHeight() {
     const height = document.documentElement.scrollHeight || document.body.scrollHeight;
     window.parent.postMessage({ iframeHeight: height }, "*");
+  }
+
+  // Send once on load
+  window.addEventListener("load", postHeight);
+
+  // Send on DOM changes (like preview expanding)
+  let resizeTimeout;
+  const observer = new ResizeObserver(() => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(postHeight, 200); // debounce
   });
+
+  observer.observe(document.body);
 </script>
 
 
