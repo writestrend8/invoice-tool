@@ -826,18 +826,19 @@
     window.parent.postMessage({ iframeHeight: height }, "*");
   }
 
-  // Send once on load
+  // Send height after load
   window.addEventListener("load", postHeight);
 
-  // Send on DOM changes (like preview expanding)
-  let resizeTimeout;
-  const observer = new ResizeObserver(() => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(postHeight, 200); // debounce
-  });
-
-  observer.observe(document.body);
+  // OPTIONAL: Hook into the Preview button
+  const previewButton = document.querySelector('.preview-button-class'); // replace selector as needed
+  if (previewButton) {
+    previewButton.addEventListener("click", function () {
+      // Wait a bit for DOM to change
+      setTimeout(postHeight, 300);
+    });
+  }
 </script>
+
 
 
 	
